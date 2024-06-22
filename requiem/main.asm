@@ -73,9 +73,14 @@ main:
 
 popdef(`key_data_addr')
 
+include(`base_define.asm')
 include(`mmio.asm')
+include(`memcpy.asm')
 include(`memcpy_i2d.asm')
 include(`memcpy_d2i.asm')
+include(`tsec_wait_dma.asm')
+include(`tsec_dma_write.asm')
+include(`tsec_set_key.asm')
 
 .align 0x100
 .section #ns_data 0x200
@@ -95,8 +100,12 @@ hs_main:
     mov $r11 #FALCON_MAILBOX1
     mov $r12 0xBADC0DED
     iowr I[$r11] $r12
-
-    // Clear the HS signature and return back to NS mode.
+    csecret $c0 0x0 // this is all that is needed + cxset xdld to get acl 0x13 secrets
+    csigenc $c0 $c0
+    cxset 0x2 // changes target for next operation to cryto instead of DMA
+    xdld $r10 $r10 // load from crypto to $r10, $r10 is equivelant of $c0
+    xdwait // waits for xdld with cxset to complete
+    lcall #tsec_set_key // this takes what is stored in $r10 and pushes it through sor1
     csigclr
     ret
 
