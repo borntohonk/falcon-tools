@@ -4,3 +4,5 @@ reverse/
 *_fw.h
 *_fw_real.asm
 rop.asm
+env/
+stages/
