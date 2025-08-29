@@ -7,10 +7,10 @@ TOOLS_DIR = ../tools
 
 LIBFAUCON_SOURCES = $(wildcard LIBFAUCON_DIR/*.asm)
 
-# The key data to fake-sign the Heavy Secure mode portion of the payload.
+# The key data to sign the Heavy Secure mode portion of the payload.
 # Provide real data here.
-KEY  ?= B106B01E0C2E001875C4FFE7089BBBC9
-SEED ?= 892A36228D49E0484D480CB0ACDA0234
+KEY  ?= 6B78133CE2BC890F002E220A8AEDECA6
+SEED ?= 00000000000000000000000000000000
 
 all: $(PACKED_NAME).h
 
